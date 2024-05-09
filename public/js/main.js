@@ -24,25 +24,25 @@ async function getAll() {
         seeMore.innerText = 'see More';
         seeMore.classList.add('MoreInfo');
 
-        const deleteBtn = document.createElement('div');
-        deleteBtn.innerText = "Delete";
-        deleteBtn.classList.add('DelBtn');
-        deleteBtn.addEventListener('click', async () => {
-            const res =await fetch(`/api/clients/${d.clientId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            })
-            const data = await res.json();
-            alert(`${data.message} id:${data?.client?.clientId}`);
-            deleteBtn.parentElement.parentElement.remove();
-        })
+        // const deleteBtn = document.createElement('div');
+        // deleteBtn.innerText = "Delete";
+        // deleteBtn.classList.add('DelBtn');
+        // deleteBtn.addEventListener('click', async () => {
+        //     const res =await fetch(`/api/clients/${d.clientId}`, {
+        //         method: 'DELETE',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //     })
+        //     const data = await res.json();
+        //     alert(`${data.message} id:${data?.client?.clientId}`);
+        //     deleteBtn.parentElement.parentElement.remove();
+        // })
 
 
         modificationBtns.classList.add('ModificationBtns');
         modificationBtns.appendChild(seeMore);
-        modificationBtns.appendChild(deleteBtn);
+        // modificationBtns.appendChild(deleteBtn);
 
         //client info
         clientInfo.classList.add('ClientInfo');
