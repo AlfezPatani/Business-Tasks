@@ -1,0 +1,71 @@
+*{
+    margin:0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+.ParentContainer{
+    height: 100vh;
+    width: 100vw;
+    background-color: #222629;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.SearchArea{
+    width: 100%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 15px;
+    gap: 5px;
+ 
+}
+
+.SearchBox{
+    width: 40%;
+}
+.SearchBox input{
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 10px 15px;
+    background-color: goldenrod;
+    font-size: 1.3rem;
+}
+
+.Buttons{
+    height: 44.4px;
+}
+.Buttons button{
+    background-color: violet;
+    border: none;
+    outline: none;
+    height: 100%;
+    padding: 3px 5px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.SearchResult{
+    padding: 40px;
+    background-color: rgb(142, 128, 128);
+    display: none;
+    flex-direction: column;
+    font-size: 1.3rem;
+    align-items: center;
+    
+    
+}
+
+.SearchResult a{
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font-size: 1.3rem;
+    padding: 10px 0px;
+}
+.SearchResult a:hover{
+    text-decoration: underline;
+}

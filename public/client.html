@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles/client.css">
+</head>
+
+<body>
+    <div class="Wrapper">
+
+        <div class="ClientRight">
+            <div class="TaskListWrapper">
+                
+            </div>
+            <form class="AddTask" method="post">
+                <div class="FormElem">
+                    <label>Started</label>
+                    <input type="date"  required name="startDate" />
+                </div>
+                <div class="FormElem">
+                    <label>Ended</label>
+                    <input type="date"  required name="endDate" />
+                </div>
+                <div class="FormElem">
+                    <label>Enter Task</label>
+                    <input type="text" required name="title"/>
+                </div>
+                <button type="submit">Add Task</button>
+            </form>
+        </div>
+        
+    </div>
+
+    <script src="js/client.js"></script>
+
+</body>
+
+</html>

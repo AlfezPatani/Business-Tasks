@@ -1,0 +1,42 @@
+# Ignore node_modules folder
+node_modules/
+
+# Ignore environment files
+.env
+
+# Ignore log files
+*.log
+logs/
+
+# Ignore operating system files
+.DS_Store   # macOS
+Thumbs.db   # Windows
+Icon?       # macOS
+ehthumbs.db # Windows
+Desktop.ini # Windows
+
+# Ignore build/compiled files
+dist/
+build/
+
+# Ignore temporary files
+tmp/
+*.tmp
+*.swp       # Vim swap files
+*.swo       # Vim swap files
+
+# Ignore IDE/editor-specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore dependency lock files (choose one, if using both npm and yarn)
+yarn.lock  # If you're using npm
+package-lock.json  # If you're using yarn
+
+# Ignore test coverage reports
+coverage/
+
+# Ignore OS cache files
+.cache/

@@ -1,0 +1,141 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #222629;
+    display: flex;
+    padding-top: 100px;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+h1{
+    color: whitesmoke;
+}
+
+form{
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.InputWrapper{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    margin: 7px 0px;
+}
+.InputWrapper input{
+    width: 100%;
+    padding: 10px 15px;
+    outline: none;
+    border: none;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    background-color: #474b4f;
+    color:#ebe8ee
+}
+.InputWrapper input::placeholder{
+    color: #dfd7e7;
+}
+.InputWrapperWithLabel{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 15px;
+    color: whitesmoke;
+}
+.InputWrapperWithLabel input{
+    width: 100%;
+    padding: 10px 15px;
+    outline: none;
+    border: none;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    background-color: #474b4f;
+    color:#ebe8ee;
+
+    
+}
+
+.Submit{
+    outline: none;
+    border: none;
+    width: 150px;
+    padding: 10px 15px;
+    margin-top: 20px;
+    background-color: #d1d7e0;
+    transition: 100ms ease-in-out;
+    
+}
+.Submit:hover{
+    background-color: rgb(106, 104, 112);
+    color: white;
+}
+
+.Notification{
+    max-width: 200px;
+    background-color:rgb(101, 238, 101);
+    padding: 5px 10px;
+    position: absolute;
+    top:0;
+    right:0;
+    animation: slider 400ms ease-in-out;
+    display: none;
+}
+
+.Notification a{
+    color: rgb(34, 34, 34);
+    text-decoration: none;
+    cursor: pointer;
+}
+.Notification a:hover{
+    text-decoration: underline;
+}
+
+.Show{
+    display: flex;
+}
+.Hide{
+    display: none;
+}
+
+@keyframes slider{
+    0%{
+        transform:translateX(110%);
+           
+    }
+    25%{
+        transform:translateX(0%);
+    }
+    50%{
+        transform:translateX(-10%);
+    }
+    75%{
+        transform:translateX(-5%);
+    }
+    100%{
+        transform:translateX(0%);
+   }
+}
+
+@media (max-width:993px) {
+    .InputWrapper{
+        width: 100%;
+    }
+    .InputWrapperWithLabel{
+        width: 100%;
+    }
+}
+@media (max-width:600px) {
+    form{
+        width: 90%;
+        
+    }
+}
