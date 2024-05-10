@@ -152,12 +152,16 @@ async function getClient() {
             if (newClient.message) {
                 alert(newClient.message);
             }
+            console.log(newClient);
             const taskHtml = `<div class="Task">
                             <span class="Date">${newClient.startDate}</span>
                             <span class="Date">${newClient.endDate}</span>
                             <span class="Title">${newClient.title}</span>
+                            <button _id=${newClient._id} class="TaskDelBtn">🗑️</button>
                         </div>`
             taskListWrapper.insertAdjacentHTML('afterbegin', taskHtml);
+            addDelBttonListener();
+
             alert(`task added to ${clientId}`);
             
         } catch (error) {
@@ -170,7 +174,7 @@ async function getClient() {
 
 }
 
-getClient()
+getClient();
 
 //adding event on taskDel button
 
@@ -186,7 +190,6 @@ function addDelBttonListener(){
 
 async function deleteTask(id,ElementToDelete){
     try {
-        console.log('inside try----------');
         const res=await fetch(`/api/tasks/${id}`,{
             method:'DELETE',
             headers:{
