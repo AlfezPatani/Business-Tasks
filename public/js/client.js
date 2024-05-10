@@ -106,7 +106,7 @@ async function getClient() {
         if (updatedClient.message) {
             return alert(updatedClient.message);
         }
-        alert(`client name update to:${updatedClient.name}`)
+        alert(`client address update to:${updatedClient?.address}`)
         addrEditBtn.classList.remove('Hide');
         addrUpdate.classList.remove('Show');
         addressField.setAttribute('disabled', true);
