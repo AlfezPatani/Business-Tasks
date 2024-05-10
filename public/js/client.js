@@ -28,11 +28,11 @@ async function getClient() {
 
                     <div class="Field">
                         <label>Client ID</label>
-                        <input disabled value=${data?.clientId}>
+                        <input disabled value='${data?.clientId}'>
                     </div> 
                     <div class="Field">
                         <label>Client Name</label>
-                        <input disabled value=${data?.name} id="_name">
+                        <input disabled value='${data?.name}' id="_name">
                         <div class="ButtonWrapper">
                             <div class="Edit">Edit</div>
                             <div class="Update">Update</div>
@@ -40,7 +40,7 @@ async function getClient() {
                     </div> 
                     <div class="Field">
                         <label>Client Address</label>
-                        <input disabled value=${data?.address} id="_addr">
+                        <input disabled value='${data?.address}' id="_addr">
                         <div class="ButtonWrapper">
                             <div class="Edit">Edit</div>
                             <div class="Update">Update</div>
