@@ -24,11 +24,9 @@ searchByNameBtn.addEventListener('click', async () => {
             headers: { 'Content-Type': 'application/json' }
         })
         const data = await res.json();
-        console.log(data);
         if (res.status !== 200) {
             searchResultContainer.style.display = "flex";
             searchResultContainer.innerHTML = "client dosn't exist or internal server error";
-            console.log('empty');
             return
         }
         

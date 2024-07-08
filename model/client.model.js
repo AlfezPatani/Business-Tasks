@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const clientSchema=new mongoose.Schema({
+    tier:{
+        type:String,
+        required:[true,"clientId  is required"]
+    },
     clientId:{
         type:Number,
         unique:true,
@@ -12,6 +16,10 @@ const clientSchema=new mongoose.Schema({
     address:{
         type:String,
         required:[true,"clientId  is required"]
+    },
+    phone:{
+        type:Number,
+        required:[true,"client phone no is required"]
     },
     tasks:[{
         type:mongoose.Schema.Types.ObjectId,

@@ -8,12 +8,12 @@ form.addEventListener('submit',async(e)=>{
     if(isNotified){
             notification.classList.toggle('Show');
             isNotified=false;
-            console.log(false);
+            
         }
     const formData=new FormData(form);
     const parsedData={task:{}};
     for([key,value] of formData) {
-        if(key==='name' || key==="address")
+        if(key==='name' || key==="address" || key==='phone' || key==='tier')
         {
             parsedData[key]=value
             
@@ -23,7 +23,6 @@ form.addEventListener('submit',async(e)=>{
         }
     }  
 
-    
     
     try {
         const res=await fetch('/api/clients',{

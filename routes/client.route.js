@@ -1,41 +1,90 @@
-import { Router } from 'express';
+import { json, Router } from 'express';
 import { Client } from '../model/client.model.js';
 import { Task } from '../model/task.model.js'
 import { Counter } from '../model/counter.model.js';
+import { convertToDDMMYYYY } from '../utility.js';
+
 
 const clientRouter = Router();
 
-const createClientId = async (req, res, next) => {
+const initClientId = async (req, res, next) => {
     try {
-        const id = await Counter.findByIdAndUpdate(
-            'akkipaji',
-            {
-                $inc: { seq: 1 },
-            },
-            {
-                new: true
-            }
-        );
-        req.body.clientId = id.seq;
+        const id = await Counter.findById('akkipaji');
+
+        if (!id) {
+            //yoyo
+            console.log('inside if');
+            const counter = new Counter();
+            counter._id = 'akkipaji';
+            counter.goldSeq = 110000;
+            counter.silverSeq = 330000;
+            counter.bronzeSeq = 660000;
+            await counter.save();
+        }
         next();
     } catch (error) {
-        res.status(400).json({ message: "coldn't generate key" });
-
+        return res.status(400).json({ message: " problem occure in server during initializing a customer key" });
     }
 }
 
-clientRouter.post('/clients', createClientId, async (req, res) => {
+const createClientId = async (req, res, next) => {
+    try {
+        const tier = req.body.tier;
+        if (!tier) {
+            return res.status(400).json({ message: "Tier is required" });
+        }
+
+        let update;
+        if (tier === 'gold') {
+            update = { $inc: { goldSeq: 1 } };
+        } else if (tier === 'silver') {
+            update = { $inc: { silverSeq: 1 } };
+        } else if (tier === 'bronze') {
+            update = { $inc: { bronzeSeq: 1 } };
+        } else {
+            return res.status(400).json({ message: "Invalid tier value" });
+        }
+
+        const id = await Counter.findByIdAndUpdate(
+            'akkipaji',
+            update,
+            { new: true }
+        );
+
+        req.body.clientId=id[tier+'Seq'];
+        next();
+
+    } catch (error) {
+        console.log("Error updating client ID:", error);
+        res.status(400).json({ message: "Couldn't generate key" });
+    }
+}
+
+
+
+clientRouter.get('/counter',async(req,res)=>{
+    await Counter.deleteMany()
+    const counter=await Counter.find();
+    res.json(counter);
+});
+
+clientRouter.post('/clients', initClientId, createClientId, async (req, res) => {
     if (req.body) {
-        console.log(req.body);
-        const { clientId, name, address } = req.body;
+        console.log();
+        const { clientId, name, address,tier,phone} = req.body;
+        let { title, startDate, endDate } = req?.body.task;
+        startDate = convertToDDMMYYYY(startDate);
+        endDate = convertToDDMMYYYY(endDate);
         try {
             const client = new Client({
                 clientId,
                 name,
                 address,
+                tier,
+                phone,
                 tasks: []
             });
-            const task = await Task.create(req.body?.task);
+            const task = await Task.create({ title, startDate, endDate });
             client.tasks.push(task._id);
             await client.save();
             res.status(200).json(client);
@@ -53,9 +102,9 @@ clientRouter.post('/clients', createClientId, async (req, res) => {
 })
 
 clientRouter.get('/clients/:clientId', async (req, res) => {
-    
+
     try {
-        
+
         const client = await Client.findOne({ clientId: req.params.clientId }).populate('tasks');
         if (!client) {
             return res.status(404).json({ message: "client doesn't exists" });
@@ -97,10 +146,14 @@ clientRouter.delete('/clients/:clientId', async (req, res) => {
 
 clientRouter.patch('/clients/:clientId', async (req, res, next) => {
     const id = Number(req.params.clientId);
-    const { task, title, startDate, endDate } = req.body;
-    console.log(req.body);
+    let { task, title, startDate, endDate } = req.body;
+
+    startDate = convertToDDMMYYYY(startDate);
+    endDate = convertToDDMMYYYY(endDate);
+
+
     if (task) {
-     
+
         try {
 
             const newTask = await Task.create({ title, startDate, endDate });
@@ -108,10 +161,10 @@ clientRouter.patch('/clients/:clientId', async (req, res, next) => {
             if (!tasks) {
                 res.status(400).json({ message: `sorry couldn't add task to ${id} because client doesn't exist` });
             }
-            else{
+            else {
                 tasks.push(newTask._id);
-            const updatedClient = await Client.findOneAndUpdate({clientId:{$eq:id}},{tasks})
-            return res.status(200).json(newTask);
+                const updatedClient = await Client.findOneAndUpdate({ clientId: { $eq: id } }, { tasks })
+                return res.status(200).json(newTask);
             }
 
         } catch (error) {
@@ -133,8 +186,8 @@ clientRouter.patch('/clients/:clientId', async (req, res, next) => {
                 }
                 res.status(200).json(updatedClient)
             }
-            else{
-                res.json({message:'not served this request'});
+            else {
+                res.json({ message: 'not served this request' });
             }
 
 
@@ -147,17 +200,17 @@ clientRouter.patch('/clients/:clientId', async (req, res, next) => {
 
 //searching the client
 
-clientRouter.post('/clients/:searchQuery',async(req,res)=>{
-        const searchQuery=req.params.searchQuery;
-        try {
-            const result=await Client.find({$text:{$search:searchQuery}});
-            if(!result || result.length <=0){
-                return res.status(404).json({ message: "client couldn't find" });
-            }
-            res.status(200).json(result)
-        } catch (error) {
-            res.status(500).json({ message: 'internal server error', path: 'server', error: error });
+clientRouter.post('/clients/:searchQuery', async (req, res) => {
+    const searchQuery = req.params.searchQuery;
+    try {
+        const result = await Client.find({ $text: { $search: searchQuery } });
+        if (!result || result.length <= 0) {
+            return res.status(404).json({ message: "client couldn't find" });
         }
+        res.status(200).json(result)
+    } catch (error) {
+        res.status(500).json({ message: 'internal server error', path: 'server', error: error });
+    }
 })
 
 

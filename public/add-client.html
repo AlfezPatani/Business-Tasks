@@ -10,22 +10,34 @@
 <body>
     <form>
         <h1>Add Client Details</h1>
-        <div class="InputWrapper">
-            <input type="text"name="name" placeholder="Enter Client Name"/>
+        <div class="InputWrapperWithLabel">
+            <label>Select Tier</label>
+            <select name="tier" required>
+                <option selected disabled >---select---</option>
+                <option value="gold">gold</option>
+                <option value="silver">silver</option>
+                <option value="bronze">bronze</option>
+            </select>
         </div>
         <div class="InputWrapper">
-            <input type="text"name="address" placeholder="Enter Client Address"/>
+            <input type="text" required name="name" placeholder="Enter Client Name"/>
         </div>
         <div class="InputWrapper">
-            <input type="text"name="title" placeholder="Enter Task"/>
+            <input type="text"name="address" required placeholder="Enter Client Address"/>
+        </div>
+        <div class="InputWrapper">
+            <input type="text" placeholder="phone number" name="phone" maxlength="10" required pattern="\d{10}">
+        </div>
+        <div class="InputWrapper">
+            <input type="text"name="title" required placeholder="Enter Task"/>
         </div>
         <div class="InputWrapperWithLabel">
             <label>Started At</label>
-            <input type="date"name="startDate" placeholder="Enter Client Address"/>
+            <input required type="date"name="startDate" placeholder="Enter Client Address"/>
         </div>
         <div class="InputWrapperWithLabel">
             <label>Started At</label>
-            <input type="date"name="endDate" placeholder="Enter Client Address"/>
+            <input required type="date"name="endDate" placeholder="Enter Client Address"/>
         </div>
         <button class="Submit" type="submit">Add Client</button>
     </form>

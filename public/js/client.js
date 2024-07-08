@@ -21,11 +21,10 @@ async function getClient() {
         wrapper.insertAdjacentHTML('afterbegin', error)
         return;
     }
-
     // ------for left side --------
     const html = `
                 <div class="ClientLeft">
-
+                    <h2>Tier:${data?.tier}<h2/>
                     <div class="Field">
                         <label>Client ID</label>
                         <input disabled value='${data?.clientId}'>
@@ -119,18 +118,19 @@ async function getClient() {
 
     if (data.tasks) {
         data.tasks.forEach((taskElement) => {
+            
             const html = `
                     <div class="Task">
                         <span class="Date">${taskElement.startDate}</span>
                         <span class="Date">${taskElement.endDate}</span>
                         <span class="Title">${taskElement.title}</span>
-                        <button _id=${taskElement._id} class="TaskDelBtn">🗑️</button>
-                     </div>
-            `
+                        </div>
+                        `
+                        // <button _id=${taskElement._id} class="TaskDelBtn">🗑️</button>
             taskListWrapper.insertAdjacentHTML('afterbegin', html);
 
         });
-        addDelBttonListener();
+        // addDelBttonListener();
     }
 
     const addTaskForm = document.querySelector('.AddTask');
@@ -157,10 +157,10 @@ async function getClient() {
                             <span class="Date">${newClient.startDate}</span>
                             <span class="Date">${newClient.endDate}</span>
                             <span class="Title">${newClient.title}</span>
-                            <button _id=${newClient._id} class="TaskDelBtn">🗑️</button>
+                            // <button _id=${newClient._id} class="TaskDelBtn">🗑️</button>
                         </div>`
             taskListWrapper.insertAdjacentHTML('afterbegin', taskHtml);
-            addDelBttonListener();
+            // addDelBttonListener();
 
             alert(`task added to ${clientId}`);
             

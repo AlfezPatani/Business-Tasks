@@ -30,6 +30,11 @@ body {
     padding: 20px;
 }
 
+.ClientLeft h2{
+    color: white;
+    margin-bottom: 20px;
+}
+
 .Field {
     width: 100%;
     display: flex;
