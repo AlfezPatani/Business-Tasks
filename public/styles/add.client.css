@@ -30,7 +30,7 @@ form{
     justify-content: center;
     margin: 7px 0px;
 }
-.InputWrapper input{
+.InputWrapper input,textarea{
     width: 100%;
     padding: 10px 15px;
     outline: none;
@@ -38,7 +38,8 @@ form{
     font-size: 1.1rem;
     border-radius: 4px;
     background-color: #474b4f;
-    color:#ebe8ee
+    color:#ebe8ee;
+    resize: vertical;
 }
 .InputWrapper input::placeholder{
     color: #dfd7e7;

@@ -115,22 +115,33 @@ async function getClient() {
 
     //----------for right side---------
     const taskListWrapper = document.querySelector('.TaskListWrapper');
+    const listHeadings = `<div class="Task">
+                        <h2 class="Date ListHeading">Started at</span>
+                        <h2 class="Date ListHeading">Ends at </span>
+                        <h2 class="Title ListHeading">tasks</span>`
+    taskListWrapper.insertAdjacentHTML('beforebegin', listHeadings)
+    console.log(data.tasks);
 
     if (data.tasks) {
-        data.tasks.forEach((taskElement) => {
-            
+        data.tasks.forEach((taskElement, index) => {
             const html = `
                     <div class="Task">
                         <span class="Date">${taskElement.startDate}</span>
                         <span class="Date">${taskElement.endDate}</span>
                         <span class="Title">${taskElement.title}</span>
-                        </div>
+                        <button _id=${taskElement._id}  class="TaskUPdateBtn">✏️</button>
+                        
                         `
-                        // <button _id=${taskElement._id} class="TaskDelBtn">🗑️</button>
+            // <button _id=${taskElement._id} class="TaskDelBtn">🗑️</button>
             taskListWrapper.insertAdjacentHTML('afterbegin', html);
+
+
 
         });
         // addDelBttonListener();
+        addUpdateTaskBttonListener();
+
+
     }
 
     const addTaskForm = document.querySelector('.AddTask');
@@ -157,51 +168,137 @@ async function getClient() {
                             <span class="Date">${newClient.startDate}</span>
                             <span class="Date">${newClient.endDate}</span>
                             <span class="Title">${newClient.title}</span>
-                            // <button _id=${newClient._id} class="TaskDelBtn">🗑️</button>
+                            <button class="TaskUpdateBtn">✏️<button/>
+                            
                         </div>`
             taskListWrapper.insertAdjacentHTML('afterbegin', taskHtml);
             // addDelBttonListener();
 
             alert(`task added to ${clientId}`);
-            
+
         } catch (error) {
             console.log(error);
         }
 
 
     })
-   
+
 
 }
 
 getClient();
 
-//adding event on taskDel button
+function addUpdateTaskBttonListener() {
+    const updateButtons = document.getElementsByClassName('TaskUPdateBtn');
 
-function addDelBttonListener(){
-    let taskDelButton=document.getElementsByClassName('TaskDelBtn');
-    Array.from(taskDelButton).forEach((btn)=>{
-        btn.addEventListener('click',()=>{
-            const id=btn.getAttribute('_id')
-            deleteTask(id,btn);
+    Array.from(updateButtons).forEach((btn) => {
+        const id = btn.getAttribute('_id');
+        const titleElement = btn.parentElement.querySelector('.Title');
+        btn.addEventListener('click', () => createOverlayForEditTask(id, titleElement.innerText, titleElement));
+
+
+    })
+}
+
+function createOverlayForEditTask(id, taskTitle, taskTitleElement) {
+    const overalyContainer = clearOverlayContainer();
+    overalyContainer.classList.toggle('Hide');
+
+    //creating overlay
+    const overlay = document.createElement('div');
+    overlay.classList.add('OverlayForEditTitle');
+
+    //creating content of overlay
+    const closeBtn = document.createElement('div');
+    closeBtn.classList.add('CloseOverlay');
+    closeBtn.innerText = 'X'
+    closeBtn.addEventListener('click',closeOverlayContainer)
+
+    const label = document.createElement('label');
+    label.innerText = 'Update Task'
+
+    const textArea = document.createElement('textarea');
+    textArea.value = taskTitle;
+
+    const updateButton = document.createElement('div');
+    updateButton.classList.add('UpdateTitleBtn');
+    updateButton.innerText = 'Edit Task';
+    updateButton.addEventListener('click', () => updateTask(id, textArea.value, taskTitleElement))
+
+    overlay.append(closeBtn, label, textArea, updateButton);
+    overalyContainer.appendChild(overlay);
+}
+
+function clearOverlayContainer() {
+    const overalyContainer = document.getElementById('OveralyContainer');
+    overalyContainer.innerHTML = "";
+    return overalyContainer;
+}
+
+function closeOverlayContainer(){
+    clearOverlayContainer().classList.toggle('Hide');
+}
+
+async function updateTask(id, value, element) {
+    try {
+        if (!value) {
+            alert('please enter task');
+            return;
+        }
+        if(!confirm('Do you want to update the task?')){
+            return;
+        }
+        const res = await fetch(`/api/tasks/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+
+            },
+            body: JSON.stringify({ title: value })
+        });
+        const data = await res.json();
+        if (res.status >= 400) {
+            alert(data.message);
+            return;
+        }
+        alert(`your task updated sucessFully:${value}`);
+        element.innerText=value;
+        closeOverlayContainer();
+
+
+    } catch (error) {
+       alert(error.message);
+    }
+
+
+}
+
+//adding event on taskDel button
+function addDelBttonListener() {
+    let taskDelButton = document.getElementsByClassName('TaskDelBtn');
+    Array.from(taskDelButton).forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const id = btn.getAttribute('_id')
+            deleteTask(id, btn);
         })
     })
 }
 
-async function deleteTask(id,ElementToDelete){
+async function deleteTask(id, ElementToDelete) {
     try {
-        const res=await fetch(`/api/tasks/${id}`,{
-            method:'DELETE',
-            headers:{
-                'Content-Type':'application/json'
-            }});
-        const data=await res.json();
-        if(!res.status==200){
+        const res = await fetch(`/api/tasks/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await res.json();
+        if (!res.status == 200) {
             return alert(data?.message);
         }
-        const TaskElement=ElementToDelete.parentElement;
+        const TaskElement = ElementToDelete.parentElement;
         TaskElement.remove();
-        
+
     } catch (error) {
         console.log(error);
     }

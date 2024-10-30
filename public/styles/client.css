@@ -91,6 +91,17 @@ body {
     padding: 20px;
 }
 
+.ListHeading{
+    border: unset;
+    color: white;
+   border: none !important;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   font-size: 1rem;
+
+}
+
 .TaskListWrapper {
     width: 100%;
     height: 300px;
@@ -98,8 +109,6 @@ body {
     background-color: white;
     position: relative;
 }
-
-
 
 .Task {
     display: flex;
@@ -129,7 +138,7 @@ body {
 
 }
 
-.TaskDelBtn {
+.TaskDelBtn,.TaskUpdatelBtn,.FinalUpdate {
     position: absolute;
     right: 0;
     color: red;
@@ -165,11 +174,11 @@ body {
     color: white;
 }
 
-.FormElem input {
+.FormElem input,textarea {
     flex-grow: 1;
 }
 
-.FormElem input {
+.FormElem input,textarea {
     padding: 10px;
 
 }
@@ -177,17 +186,78 @@ body {
 .AddTask button {
     padding: 14px 20px;
     margin-left: 15px;
+
+}
+
+#OveralyContainer{
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 100vw;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.364);
+}
+.OverlayForEditTitle{
+    width: 100%;
+    max-width: 500px;
+    padding: 10px;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap:5px;
+    background-color:white;
+    position: relative;
+}
+.CloseOverlay{
+    height: 25px;
+    width: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background-color:rgb(99, 5, 5);
+    color: white;
+    cursor: pointer;
+    user-select: none;
+}
+.UpdateTitleBtn{
+    padding: 5px;
+    margin-top: 6px;
+    width: fit-content;
+    background-color: rgb(139, 225, 139);
+    cursor: pointer;
+}
+
+.OverlayForEditTitle label{
+    font-size: 1rem;
+    font-weight: bold;
+
+}
+.OverlayForEditTitle textarea{
+    outline: none;
+    border: none;
+    width: 100%;
+    max-width: 100%;
+    background-color: #d2d6da;
+    color: black;
+    font-size: 1rem;
 }
 
 
 /*---hide and show*/
 
 .Hide {
-    display: none;
+    display: none !important;
 }
 
 .Show {
-    display: block;
+    display: block !important;
 }
 
 @media (max-width:1100px) {

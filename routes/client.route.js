@@ -51,7 +51,7 @@ const createClientId = async (req, res, next) => {
             { new: true }
         );
 
-        req.body.clientId=id[tier+'Seq'];
+        req.body.clientId = id[tier + 'Seq'];
         next();
 
     } catch (error) {
@@ -62,16 +62,16 @@ const createClientId = async (req, res, next) => {
 
 
 
-clientRouter.get('/counter',async(req,res)=>{
+clientRouter.get('/counter', async (req, res) => {
     await Counter.deleteMany()
-    const counter=await Counter.find();
+    const counter = await Counter.find();
     res.json(counter);
 });
 
 clientRouter.post('/clients', initClientId, createClientId, async (req, res) => {
     if (req.body) {
         console.log();
-        const { clientId, name, address,tier,phone} = req.body;
+        const { clientId, name, address, tier, phone } = req.body;
         let { title, startDate, endDate } = req?.body.task;
         startDate = convertToDDMMYYYY(startDate);
         endDate = convertToDDMMYYYY(endDate);
@@ -195,8 +195,6 @@ clientRouter.patch('/clients/:clientId', async (req, res, next) => {
             res.status(400).json({ message: `can't update the client` });
         }
     })
-
-
 
 //searching the client
 
