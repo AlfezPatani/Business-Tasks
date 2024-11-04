@@ -101,15 +101,15 @@ clientRouter.post('/clients', initClientId, createClientId, async (req, res) => 
     }
 })
 
-clientRouter.get('/clients/:clientId', async (req, res,next) => {
+clientRouter.get('/clients/:clientId', async (req, res, next) => {
 
     try {
-        const id=req.params.clientId;
-        if(/^\d{10}$/.test(id)){        
+        const id = req.params.clientId;
+        if (/^\d{10}$/.test(id)) {
             next();
             return;
         }
-        
+
         const client = await Client.findOne({ clientId: id }).populate('tasks');
         if (!client) {
             return res.status(404).json({ message: "client doesn't exists" });
@@ -128,7 +128,7 @@ clientRouter.get('/clients/:clientPhone', async (req, res) => {
     try {
 
         console.log('find by phone');
-        
+
         const client = await Client.findOne({ phone: req.params.clientPhone }).populate('tasks');
         if (!client) {
             return res.status(404).json({ message: "client doesn't exists" });
@@ -171,13 +171,9 @@ clientRouter.delete('/clients/:clientId', async (req, res) => {
 clientRouter.patch('/clients/:clientId', async (req, res, next) => {
     const id = Number(req.params.clientId);
     let { task, title, startDate, endDate } = req.body;
-
-    startDate = convertToDDMMYYYY(startDate);
-    endDate = convertToDDMMYYYY(endDate);
-
-
     if (task) {
-
+        startDate = convertToDDMMYYYY(startDate);
+        endDate = convertToDDMMYYYY(endDate);
         try {
 
             const newTask = await Task.create({ title, startDate, endDate });
