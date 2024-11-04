@@ -72,9 +72,10 @@ clientRouter.post('/clients', initClientId, createClientId, async (req, res) => 
     if (req.body) {
         console.log();
         const { clientId, name, address, tier, phone } = req.body;
-        let { title, startDate, endDate } = req?.body.task;
+        let { title, startDate, endDate,expDate } = req?.body.task;
         startDate = convertToDDMMYYYY(startDate);
         endDate = convertToDDMMYYYY(endDate);
+        expDate=convertToDDMMYYYY(expDate);
         try {
             const client = new Client({
                 clientId,
@@ -84,7 +85,7 @@ clientRouter.post('/clients', initClientId, createClientId, async (req, res) => 
                 phone,
                 tasks: []
             });
-            const task = await Task.create({ title, startDate, endDate });
+            const task = await Task.create({ title, startDate, endDate,expDate });
             client.tasks.push(task._id);
             await client.save();
             res.status(200).json(client);
@@ -170,13 +171,14 @@ clientRouter.delete('/clients/:clientId', async (req, res) => {
 
 clientRouter.patch('/clients/:clientId', async (req, res, next) => {
     const id = Number(req.params.clientId);
-    let { task, title, startDate, endDate } = req.body;
+    let { task, title, startDate, endDate,expDate } = req.body;
     if (task) {
         startDate = convertToDDMMYYYY(startDate);
         endDate = convertToDDMMYYYY(endDate);
+        expDate=convertToDDMMYYYY(expDate);
         try {
 
-            const newTask = await Task.create({ title, startDate, endDate });
+            const newTask = await Task.create({ title, startDate, endDate,expDate });
             const { tasks } = await Client.findOne({ clientId: { $eq: id } }, { tasks: 1 });
             if (!tasks) {
                 res.status(400).json({ message: `sorry couldn't add task to ${id} because client doesn't exist` });

@@ -22,8 +22,6 @@ form.addEventListener('submit',async(e)=>{
             parsedData.task[key]=value;
         }
     }  
-
-    
     try {
         const res=await fetch('/api/clients',{
             method:'POST',
@@ -36,6 +34,7 @@ form.addEventListener('submit',async(e)=>{
             link.setAttribute('href',`client.html?id=${data?.clientId}`);
             notification.classList.toggle('Show');
             isNotified=true;
+            form.reset();
             
         }
         else{

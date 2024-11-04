@@ -289,4 +289,7 @@ body {
     .FormElem {
         width: 100%;
     }
+    .Task{
+        width: fit-content;
+    }
 }

@@ -82,7 +82,7 @@ form{
     max-width: 200px;
     background-color:rgb(101, 238, 101);
     padding: 5px 10px;
-    position: absolute;
+    position: fixed;
     top:0;
     right:0;
     animation: slider 400ms ease-in-out;

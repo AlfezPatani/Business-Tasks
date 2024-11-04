@@ -25,6 +25,7 @@ async function getClient() {
     const html = `
                 <div class="ClientLeft">
                     <h2>Tier:${data?.tier}<h2/>
+                    <h2>Phone:${data?.phone}<h2/>
                     <div class="Field">
                         <label>Client ID</label>
                         <input disabled value='${data?.clientId}'>
@@ -116,9 +117,10 @@ async function getClient() {
     //----------for right side---------
     const taskListWrapper = document.querySelector('.TaskListWrapper');
     const listHeadings = `<div class="Task">
-                        <h2 class="Date ListHeading">Started at</span>
-                        <h2 class="Date ListHeading">Ends at </span>
-                        <h2 class="Title ListHeading">tasks</span>`
+                        <h2 class="Date ListHeading">Started at</h2>
+                        <h2 class="Date ListHeading">Ends at</h2>
+                        <h2 class="Date ListHeading">expires at</h2>
+                        <h2 class="Title ListHeading">tasks</h2>`
     taskListWrapper.insertAdjacentHTML('beforebegin', listHeadings)
     console.log(data.tasks);
 
@@ -128,6 +130,7 @@ async function getClient() {
                     <div class="Task">
                         <span class="Date">${taskElement.startDate}</span>
                         <span class="Date">${taskElement.endDate}</span>
+                         <span class="Date">${taskElement.expDate}</span>
                         <span class="Title">${taskElement.title}</span>
                         <button _id=${taskElement._id}  class="TaskUPdateBtn">✏️</button>
                         
@@ -145,6 +148,7 @@ async function getClient() {
     }
 
     const addTaskForm = document.querySelector('.AddTask');
+    let addingInprogress=false;
     addTaskForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(addTaskForm);
@@ -152,23 +156,34 @@ async function getClient() {
         const dataForSendToServer = {};
         for (const [key, value] of formData) {
             dataForSendToServer[key] = value
-        }
+        } 
         try {
+            console.log(addingInprogress);
+            
+            if(addingInprogress){
+                alert('We are adding task already, please wait...');
+                return;
+            }
+            addingInprogress=true;
             const res = await fetch(`/api/clients/${clientId}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dataForSendToServer)
             })
+            addingInprogress=false;
+            addTaskForm.reset();
             const newClient = await res.json();
             if (newClient.message) {
                 alert(newClient.message);
+                return;
             }
             console.log(newClient);
             const taskHtml = `<div class="Task">
                             <span class="Date">${newClient.startDate}</span>
                             <span class="Date">${newClient.endDate}</span>
+                            <span class="Date">${newClient.expDate}</span>
                             <span class="Title">${newClient.title}</span>
-                            <button class="TaskUpdateBtn">✏️<button/>
+                            <button _id=${newClient._id}  class="TaskUPdateBtn">✏️</button>
                             
                         </div>`
             taskListWrapper.insertAdjacentHTML('afterbegin', taskHtml);
@@ -177,6 +192,7 @@ async function getClient() {
             alert(`task added to ${clientId}`);
 
         } catch (error) {
+            addingInprogress=false;
             console.log(error);
         }
 
