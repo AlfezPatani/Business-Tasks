@@ -101,11 +101,35 @@ clientRouter.post('/clients', initClientId, createClientId, async (req, res) => 
     }
 })
 
-clientRouter.get('/clients/:clientId', async (req, res) => {
+clientRouter.get('/clients/:clientId', async (req, res,next) => {
+
+    try {
+        const id=req.params.clientId;
+        if(/^\d{10}$/.test(id)){        
+            next();
+            return;
+        }
+        
+        const client = await Client.findOne({ clientId: id }).populate('tasks');
+        if (!client) {
+            return res.status(404).json({ message: "client doesn't exists" });
+        }
+
+        res.status(200).json(client);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'internal server error', path: 'server', error: error });
+    }
+})
+
+clientRouter.get('/clients/:clientPhone', async (req, res) => {
 
     try {
 
-        const client = await Client.findOne({ clientId: req.params.clientId }).populate('tasks');
+        console.log('find by phone');
+        
+        const client = await Client.findOne({ phone: req.params.clientPhone }).populate('tasks');
         if (!client) {
             return res.status(404).json({ message: "client doesn't exists" });
         }
@@ -210,6 +234,16 @@ clientRouter.post('/clients/:searchQuery', async (req, res) => {
         res.status(500).json({ message: 'internal server error', path: 'server', error: error });
     }
 })
+
+// clientRouter.get('/delete all', async (req, res) => {
+//     try {
+//         const c = await Client.deleteMany();
+//         const t = await Task.deleteMany();
+//         res.json({ c, t })
+//     } catch (error) {
+
+//     }
+// })
 
 
 

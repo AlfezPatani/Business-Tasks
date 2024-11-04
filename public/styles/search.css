@@ -13,19 +13,24 @@
     align-items: center;
 
 }
+.ParentContainer h2{
+    color:whitesmoke;
+    font-size: 1.2rem;
+}
 .SearchArea{
     width: 100%;
-    background-color: trans;
+    background-color: transparent;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px 15px;
+    padding: 10px 10px;
     gap: 5px;
  
 }
 
 .SearchBox{
-    width: 40%;
+    flex-grow: 1;
+    max-width: 500px;
 }
 .SearchBox input{
     border: none;
@@ -36,15 +41,17 @@
 }
 
 .Buttons{
-    height: 44.4px;
+    height: 44px;
+    flex: 0 0 auto;
 }
 .Buttons button{
+    flex-grow: 1;
     background-color: rgb(19, 82, 112);
     border: none;
     outline: none;
     height: 100%;
     padding: 3px 5px;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 500;
     color: white;
 }
@@ -69,4 +76,14 @@
 }
 .SearchResult a:hover{
     text-decoration: underline;
+}
+
+@media (max-width:420px) {
+    .SearchArea{
+        flex-direction: column;
+    }
+    .SearchBox{
+        width: 100%;
+    }
+
 }
